@@ -37,6 +37,14 @@ test('init calls setDragAndDropEvents()', function() {
   ok(stub1.called, 'setDragAndDropEvents() called');
 });
 
+test('init don\'t call setDragAndDropEvents() if dragAndDrop option set as false', function() {
+  var stub1 = this.stub($.fn.mediumInsert.getAddon('images'), 'setDragAndDropEvents');
+  $.fn.mediumInsert.getAddon('images').options.dragAndDrop = false;  
+
+  $.fn.mediumInsert.getAddon('images').init();
+  ok(stub1.notCalled, 'setDragAndDropEvents() called');
+});
+
 test('init calls preparePreviousImages()', function() {
   var stub1 = this.stub($.fn.mediumInsert.getAddon('images'), 'preparePreviousImages');
 
@@ -133,6 +141,7 @@ asyncTest('setImageEvents creates mouseenter event on image', function () {
 
   $('.mediumInsert-images', $el).mouseenter();
 });
+
 
 asyncTest('setImageEvents mouseenter event on image does nothing if the plugin is disabled', function () {
   var $el = $('#qunit-fixture').html('<div class="mediumInsert" id="mediumInsert-0" contenteditable="false">'+

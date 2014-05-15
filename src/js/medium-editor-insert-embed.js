@@ -54,6 +54,9 @@
           if (e.which === 13){
             e.stopPropagation();
             if (that.isSupported(this.value)){
+              if (that.provider.name === 'youtub' && that.provider.httpsProtocol) {
+                this.value = this.value.replace('https', 'http');
+              }
               that.getEmbedCode(this.value);
             }else{
               that.options.unsupportedURL(this.value);
@@ -101,6 +104,10 @@
       var valid = false;
       // if this is url of an image
       if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(url)){
+        this.provider = {
+          'name': url.match(/\.(gif|jpg|jpeg|tiff|png)$/i)[1],
+          'httpsProtocol': url.match(/https/)
+        };
         return true;
       }
       var providers = this.options.supportedProviders;
@@ -108,6 +115,10 @@
       while (i >= 0) {
         if (url.toLowerCase().indexOf(providers[i]) !== -1 ) {
           valid = true;
+          this.provider = {
+            'name': providers[i],
+            'httpsProtocol': url.match(/https/)
+          };
           break;
         }
         i--;
